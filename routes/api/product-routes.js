@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
 
     }
 
-
 });
 
 // get one product
@@ -25,18 +24,17 @@ router.get('/:id', async (req, res) => {
     // find a single product by its `id`
     // be sure to include its associated Category and Tag data
     try {
-        const productData = await Product.findByPk(req.params.id, {
+        const product = await Product.findOne({
     
-          include: [{ model: Product, through: ProductTag, as: 'product-tag' }]
-          
+          include: [{ model:Category}, {model: Tag, through: ProductTag}],
+          where: {id: req.params.id}
         });
-    
-        if (!productData) {
+        if (!product) {
           res.status(404).json({ message: 'Invalid ID!' });
           return;
         }
     
-        res.status(200).json(productData);
+        res.status(200).json(product);
       } catch (err) {
         res.status(500).json(err);
       }
