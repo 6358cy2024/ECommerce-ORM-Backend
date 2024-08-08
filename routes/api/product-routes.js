@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
         const products = await Product.findAll({
             include: [{model: Category}, {model: Tag, through: ProductTag}]
         });
-        res.status(200).json(products);
+        res.json(products);
     } catch {
-        res.status(500).json(err);
+        res.json(err);
 
     }
 
@@ -30,13 +30,13 @@ router.get('/:id', async (req, res) => {
           where: {id: req.params.id}
         });
         if (!product) {
-          res.status(404).json({ message: 'Invalid ID!' });
+          res.json({ message: 'Invalid ID!' });
           return;
         }
     
-        res.status(200).json(product);
+        res.json(product);
       } catch (err) {
-        res.status(500).json(err);
+        res.json(err);
       }
 });
 
@@ -119,11 +119,6 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     // delete one product by its `id` value
-    await ProductTag.destory({
-        where: {
-            id: req.params.id
-        }
-    });
     await Product.destory({
         where: {
             id: req.params.id
