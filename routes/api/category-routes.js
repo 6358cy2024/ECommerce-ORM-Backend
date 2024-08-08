@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category, Product, ProductTag } = require('../../models');
+const { Category, Product} = require('../../models');
 
 // The `/api/categories` endpoint
 
@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
         include: [{model: Product}]
     });
 
-    res.status(200).json(categoryData);
+    res.json(categoryData);
   } catch{
-    res.status(500).json(err);
+    res.json(err);
 
   }
 });
@@ -32,13 +32,13 @@ router.get('/:id', async (req, res) => {
     });
 
     if (!category) {
-      res.status(404).json({ message: 'Invalid ID!' });
+      res.json({ message: 'Invalid ID!' });
       return;
     }
 
-    res.status(200).json(category);//successful
+    res.json(category);//successful
   } catch (err) {
-    res.status(500).json(err);
+    res.json(err);
   }
 });
 
@@ -46,9 +46,9 @@ router.post('/', async (req, res) => {
   // create a new category
   try {
     const category = await Category.create(req.body);
-    res.status(200).json(category);
+    res.json(category);
   } catch (err) {
-    res.status(400).json(err);
+    res.json(err);
   }
 
 });
@@ -73,13 +73,13 @@ router.delete('/:id', async (req, res) => {
     });
 
     if (!categoryData) {
-      res.status(404).json({ message: 'Invalid ID' });
+      res.json({ message: 'Invalid ID' });
       return;
     }
 
-    res.status(200).json(categoryData);
+    res.json(categoryData);
   } catch (err) {
-    res.status(500).json(err);
+    res.json(err);
   }
 });
 
