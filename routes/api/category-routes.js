@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category, Product} = require('../../models');
+const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
@@ -8,11 +8,11 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Products
   try {
     const categories = await Category.findAll({
-        include: [{model: Product}]
+      include: [{ model: Product }]
     });
 
     res.json(categories);
-  } catch{
+  } catch {
     res.json(err);
 
   }
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
   try {
     const category = await Category.findOne({
 
-      include: [{model: Product}],
+      include: [{ model: Product }],
       where: {
         id: req.params.id
       }
@@ -57,30 +57,26 @@ router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   const category = await Category.update(req.body,
     {
-      where: {id: req.params.id}
-  })
+      where: { id: req.params.id }
+    })
   res.json(category);
 
 });
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
-  try {
-    const category = await Category.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-
-    if (!category) {
-      res.json({ message: 'Invalid ID' });
-      return;
+  const category = await Category.destroy({
+    where: {
+      id: req.params.id
     }
+  });
 
-    res.json(category);
-  } catch (err) {
-    res.json(err);
+  if (!category) {
+    res.json({ message: 'Invalid ID' });
+    return;
   }
+
+  res.json(category);
 });
 
 module.exports = router;
