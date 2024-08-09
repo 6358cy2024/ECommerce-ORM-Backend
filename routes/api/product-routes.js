@@ -7,15 +7,11 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', async (req, res) => {
     // find all products
     // be sure to include its associated Category and Tag data
-    try {
-        const products = await Product.findAll({
-            include: [{model: Category}, {model: Tag, through: ProductTag}]
-        });
-        res.json(products);
-    } catch {
-        res.json(err);
 
-    }
+    const products = await Product.findAll({
+        include: [{ model: Category }, { model: Tag, through: ProductTag }]
+    });
+    res.json(products);
 
 });
 
@@ -25,19 +21,19 @@ router.get('/:id', async (req, res) => {
     // be sure to include its associated Category and Tag data
     try {
         const product = await Product.findOne({
-    
-          include: [{ model:Category}, {model: Tag, through: ProductTag}],
-          where: {id: req.params.id}
+
+            include: [{ model: Category }, { model: Tag, through: ProductTag }],
+            where: { id: req.params.id }
         });
         if (!product) {
-          res.json({ message: 'Invalid ID!' });
-          return;
+            res.json({ message: 'Invalid ID!' });
+            return;
         }
-    
+
         res.json(product);
-      } catch (err) {
+    } catch (err) {
         res.json(err);
-      }
+    }
 });
 
 // create new product
@@ -119,7 +115,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     // delete one product by its `id` value
-    await Product.destory({
+    await Product.destroy({
         where: {
             id: req.params.id
         }
